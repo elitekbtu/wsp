@@ -11,8 +11,6 @@ public class Comment implements Comparable<Comment>{
     private String content;
     private Date date;
 
-
-
     public Comment(User user, String content) {
         this.user = user;
         this.content = content;

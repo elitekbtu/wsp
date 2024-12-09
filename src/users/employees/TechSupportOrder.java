@@ -11,9 +11,9 @@ public class TechSupportOrder {
     private boolean isNew;
     private boolean isAccepted;
     private boolean isDone;
+
+
     // Tech support order-specific methods
-
-
     public TechSupportOrder(String orderId, String description, boolean isNew, boolean isAccepted, boolean isDone) {
         this.orderId = orderId;
         this.description = description;

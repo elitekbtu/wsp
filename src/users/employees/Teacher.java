@@ -18,8 +18,7 @@ public class Teacher extends Employee {
         courseFiles = new ArrayList<>();
     }
 
-    public Teacher() {
-    }
+
 
     public Teacher(String id, String fullname, String department) {
         super(id, fullname, department);

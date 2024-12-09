@@ -1,7 +1,6 @@
 package news;
 
 import enums.NewsTags;
-import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -45,7 +44,7 @@ public class News implements Comparable<News> {
      * @param newsTag  The news tag associated with the article.
      * @param date     The date when the news article was created.
      */
-    public News(String title, String content, NewsTags newsTag, @NotNull Date date) {
+    public News(String title, String content, NewsTags newsTag, Date date) {
         this.title = title;
         this.content = content;
         this.newsTag = newsTag;

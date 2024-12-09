@@ -1,13 +1,13 @@
 package users;
 
-import logs.ILogged;
+
 import  news.NewsList;
 import social.Message;
 
 import java.util.*;
 import java.util.Vector;
 
-public abstract class User implements ILogged {
+public abstract class User{
     private static final Set<User> users = new HashSet<>();
     protected static final Map<String, HashMap<Language, String>> phrases;
     protected Vector<Message> messages;

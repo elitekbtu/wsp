@@ -64,12 +64,13 @@ public class ResearchPaper {
         this.doi = doi;
     }
 
-
     /**
      * Returned a citation for the research paper based on the specified format.
      * @param format The format of the citation (PLAIN_TEXT or BIBTEX).
      * @return The generated citation as a String.
      */
+
+
     public String getCitation(Format format) {
         String s = "";
         if(format == Format.PLAIN_TEXT) {

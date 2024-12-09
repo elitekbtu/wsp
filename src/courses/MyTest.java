@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 public class MyTest {
     @Test
     void T() {
-        Teacher teacher1 = new Teacher("6B0302", "Atshushi", "MCM");
-        UndergraduateStudent student1 = new UndergraduateStudent("22B030286", "Pakita", "y_saiman@kbtu.kz", "qwerty");
+        Teacher teacher1 = new Teacher("6B28112005", "ElnaraKadyrgali", "SITE");
+        UndergraduateStudent student1 = new UndergraduateStudent("23B031469", "BeknurUalikhanuly", "ualikhanuly_beknur@kbtu.kz", "Beknur23!");
         Course course = new Course("aboba", "Research methods");
 
         course.addInstructor(teacher1);
