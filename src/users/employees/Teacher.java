@@ -6,11 +6,11 @@ import users.students.Student;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Teacher extends Employee {
     private List<Course> courses;
-
     private List<File> courseFiles;
 
     {
@@ -18,8 +18,7 @@ public class Teacher extends Employee {
         courseFiles = new ArrayList<>();
     }
 
-
-
+    // Конструкторы
     public Teacher(String id, String fullname, String department) {
         super(id, fullname, department);
     }
@@ -30,37 +29,81 @@ public class Teacher extends Employee {
 
     public Teacher(String id, String fullname, String email, String password, String department, List<Course> courses) {
         super(id, fullname, email, password, department);
-        this.courses = courses;
+        if (courses != null) {
+            this.courses = new ArrayList<>(courses);
+        }
     }
 
+    // Методы работы с курсами
     public List<Course> getCourses() {
-        return courses;
+        return Collections.unmodifiableList(courses);
     }
 
     public void addCourse(Course course) {
-        courses.add(course);
+        if (course != null) {
+            courses.add(course);
+        } else {
+            throw new IllegalArgumentException("Курс не может быть null");
+        }
     }
 
     public void removeCourse(Course course) {
-        courses.remove(course);
+        if (course != null && courses.contains(course)) {
+            courses.remove(course);
+        } else {
+            throw new IllegalArgumentException("Курс не найден или null");
+        }
     }
+
+    public Course findCourseByName(String courseName) {
+        if (courseName == null || courseName.isEmpty()) {
+            throw new IllegalArgumentException("Название курса не может быть пустым");
+        }
+        return courses.stream()
+                .filter(course -> course.getCourseName().equalsIgnoreCase(courseName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    // Методы работы с жалобами
     public void sendComplaintAboutStudent(Student student, UrgencyLevel level) {
-        student.addComplaints(this, level);
+        if (student != null && level != null) {
+            student.addComplaints(this, level);
+        } else {
+            throw new IllegalArgumentException("Студент и уровень срочности не могут быть null");
+        }
     }
 
-    public void addCourseFile(File f){
-        courseFiles.add(f);
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
+    // Методы работы с файлами
     public List<File> getCourseFiles() {
-        return courseFiles;
+        return Collections.unmodifiableList(courseFiles);
+    }
+
+    public void addCourseFile(File file) {
+        if (file != null && file.exists()) {
+            courseFiles.add(file);
+        } else {
+            throw new IllegalArgumentException("Файл null или не существует");
+        }
     }
 
     public void setCourseFiles(List<File> courseFiles) {
-        this.courseFiles = courseFiles;
+        if (courseFiles != null) {
+            this.courseFiles = new ArrayList<>(courseFiles);
+        } else {
+            throw new IllegalArgumentException("Список файлов не может быть null");
+        }
     }
+
+    // Переопределение toString
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id='" + getId() + '\'' +
+                ", fullname='" + getFullname() + '\'' +
+                ", department='" + getDepartment() + '\'' +
+                ", courses=" + courses.stream().map(Course::getCourseName).toList() +
+                '}';
+    }
+
 }
