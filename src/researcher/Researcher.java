@@ -70,6 +70,10 @@ public class Researcher extends User {
 
 
     public List<ResearchPaper> publishProject(){
+        if(cited){
+            System.out.println("Project already cited");
+            return null;
+        }
         this.cited = true;
         return getPapers();
     }
