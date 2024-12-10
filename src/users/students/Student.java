@@ -67,7 +67,7 @@ public abstract class Student extends User {
         return "Student{" +
                 "studentId='" + studentId + '\'' +
                 ", department='" + department + '\'' +
-                //", enrolledCourses=" + enrolledCourses +
+                ", enrolledCourses=" + enrolledCourses +
                 ", complaints=" + complaints +
                 "} " + super.toString();
     }
