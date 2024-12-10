@@ -247,4 +247,24 @@ public class Course {
             return 0.0;
         }
     }
+    public boolean selfEnroll(Student student) {
+        // Проверка: если студент уже зарегистрирован
+        if (students.contains(student)) {
+            System.out.println("Student " + student.getFullname() + " is already enrolled in the course: " + courseName);
+            return false;
+        }
+
+        // Проверка выполнения всех пререквизитов
+        for (Course prerequisite : prerequisites) {
+            if (!prerequisite.getStudents().contains(student)) {
+                System.out.println("Student " + student.getFullname() + " has not completed prerequisite: " + prerequisite.getCourseName());
+                return false;
+            }
+        }
+
+        // Регистрация студента
+        addStudent(student);
+        System.out.println("Student " + student.getFullname() + " successfully enrolled in the course: " + courseName);
+        return true;
+    }
 }

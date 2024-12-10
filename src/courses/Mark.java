@@ -81,6 +81,9 @@ public class Mark{
     }
     public double getTotal() {
         this.total = getFirstAttestation() + getSecondAttestation() + getFinal();
+        if(this.total>100){
+            return 100;
+        }
         return this.total;
     }
 
