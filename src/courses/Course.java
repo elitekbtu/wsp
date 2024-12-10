@@ -19,6 +19,7 @@ public class Course {
     private List<Teacher> instructors;
     private List<Student> students;
     private HashMap<Student, Mark> marks = new HashMap<>();
+    private List<Course> prerequisites = new ArrayList<>();
 
     /**
      * Конструктор по умолчанию для создания объекта курса.
@@ -40,6 +41,7 @@ public class Course {
         this.credits = 0; // You may want to provide a default value for credits
         this.instructors = new ArrayList<>();
         this.students = new ArrayList<>();
+        this.prerequisites = new ArrayList<>();
     }
 
     /**
@@ -50,13 +52,15 @@ public class Course {
      * @param credits     Количество кредитов.
      * @param instructors Преподаватели курса.
      * @param students    Студенты, записанные на курс.
+     * @param prerequisites  Пререквизиты на курс.
      */
-    public Course(String courseId, String courseName, int credits, List<Teacher> instructors, List<Student> students) {
+    public Course(String courseId, String courseName, int credits, List<Teacher> instructors, List<Student> students, List<Course> prerequisites) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.credits = credits;
         this.instructors = instructors;
         this.students = students;
+        this.prerequisites = prerequisites;
     }
 
     public String getCourseName() {
@@ -98,6 +102,14 @@ public class Course {
 
     public List<Student> getStudents() {
         return students;
+    }
+
+    public List<Course> getPrerequisites() {
+        return prerequisites;
+    }
+
+    public void setPrerequisites(List<Course> prerequisites) {
+        this.prerequisites = prerequisites;
     }
 
     /**
@@ -166,6 +178,8 @@ public class Course {
                 ", credits=" + credits +
                 ", instructors=" + instructors +
                 ", students=" + students +
+                ", marks=" + marks +
+                ", prerequisites=" + prerequisites +
                 '}';
     }
 

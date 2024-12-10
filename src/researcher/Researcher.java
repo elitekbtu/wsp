@@ -13,6 +13,7 @@ import java.util.List;
 public class Researcher extends User {
     private List<ResearchPaper> papers = new ArrayList<>();
     int hIndex;
+    private boolean cited = false;
 
     public Researcher() {}
 
@@ -55,7 +56,7 @@ public class Researcher extends User {
         }
     }
 
-    public List<ResearchPaper> getPapers() {
+    private List<ResearchPaper> getPapers() {
         return papers;
     }
 
@@ -65,5 +66,11 @@ public class Researcher extends User {
 
     public int gethIndex() {
         return hIndex;
+    }
+
+
+    public List<ResearchPaper> publishProject(){
+        this.cited = true;
+        return getPapers();
     }
 }
