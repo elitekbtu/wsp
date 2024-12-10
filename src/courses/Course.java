@@ -1,5 +1,7 @@
 package courses;
 
+import users.employees.Employee;
+import users.employees.Manager;
 import users.employees.Teacher;
 import users.students.Student;
 
@@ -135,6 +137,20 @@ public class Course {
                     "registered in this course.");
         }
 
+    }
+    public void changeMark(Course course, Student student, TypeOfMark typeOfMark, Employee employee, double points ) {
+        if(employee instanceof Manager){
+            List <Student> studentList = course.getStudents();
+            for(Student st : studentList){
+                if(st.equals(student)) {
+                    course.putMark(st, points, typeOfMark);
+                    break;
+                }
+            }
+        }
+        else{
+            System.out.println("Estimates can only be changed by managers");
+        }
     }
 
     /**

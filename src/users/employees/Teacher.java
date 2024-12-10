@@ -1,6 +1,7 @@
 package users.employees;
 
 import courses.Course;
+import courses.TypeOfMark;
 import enums.UrgencyLevel;
 import users.students.Student;
 
@@ -93,6 +94,16 @@ public class Teacher extends Employee {
         } else {
             throw new IllegalArgumentException("Список файлов не может быть null");
         }
+    }
+    public void setMark(Course course, TypeOfMark typeOfMark, Student student, double points) {
+        List <Student> studentList = course.getStudents();
+        for(Student st : studentList) {
+            if(st.equals(student)) {
+                course.putMark(st, points, typeOfMark);
+                break;
+            }
+        }
+
     }
 
     // Переопределение toString
