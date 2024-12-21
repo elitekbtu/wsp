@@ -6,7 +6,6 @@ import courses.Transcript;
 import enums.UrgencyLevel;
 import users.User;
 import users.employees.Teacher;
-import courses.Transcript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
