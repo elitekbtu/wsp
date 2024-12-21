@@ -1,13 +1,17 @@
 package users;
 
 
+import analytics.EmployeeRequest;
 import  news.NewsList;
 import social.Message;
+import users.employees.Employee;
+import users.employees.TechSupportOrder;
+import users.employees.TechSupportSpecialist;
 
 import java.util.*;
 import java.util.Vector;
 
-public abstract class User{
+public abstract class User {
     private static final Set<User> users = new HashSet<>();
     protected static final Map<String, HashMap<Language, String>> phrases;
     protected Vector<Message> messages;
@@ -40,16 +44,16 @@ public abstract class User{
         this.password = password;
     }
 
-    public boolean authenticate(String email, String password){
+    public boolean authenticate(String email, String password) {
         return this.email.equals(email) && this.password.equals(password);
     }
 
-    public static User addUser(User u){
+    public static User addUser(User u) {
         users.add(u);
         return u;
     }
 
-    public static void removeUser(User u){
+    public static void removeUser(User u) {
         users.remove(u);
     }
 
@@ -84,7 +88,7 @@ public abstract class User{
                 '}';
     }
 
-    public void readNews(NewsList news){
+    public void readNews(NewsList news) {
         System.out.println(news);
     }
 
@@ -153,6 +157,7 @@ public abstract class User{
     public void sendMessage(String itTo, String content) {
         Message.sendMessage(this.getId(), itTo, content);
     }
+
     public void receiveMessage(Message message) {
         messages.add(message);
     }
@@ -165,4 +170,9 @@ public abstract class User{
         return this.toString();
     }
 
+    public void sendTechSupport(String orderId, String description, boolean isNew, boolean isAccepted, boolean isDone) {
+        TechSupportOrder techSupportOrder = new TechSupportOrder(orderId, description, isNew, isAccepted, isDone);
+        TechSupportSpecialist techSupportSpecialist = new TechSupportSpecialist();
+        techSupportSpecialist.acceptOrder(techSupportOrder);
+    }
 }
