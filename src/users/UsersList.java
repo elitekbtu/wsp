@@ -8,6 +8,7 @@ import users.students.Student;
 import users.students.UndergraduateStudent;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -124,7 +125,20 @@ public class UsersList {
     }
 
     private void saveUserData(User user) {
-        String fileName = "Пользователи/" + user.getId() + ".txt"; // Создание имени файла на основе ID пользователя
+        String directoryPath = "users/UsersData"; // Имя папки
+        File directory = new File(directoryPath);
+
+        // Проверка и создание папки, если ее нет
+        if (!directory.exists()) {
+            if (directory.mkdirs()) {
+                System.out.println("Папка " + directoryPath + " успешно создана.");
+            } else {
+                System.out.println("Не удалось создать папку " + directoryPath);
+                return; // Если папку нельзя создать, прерываем метод
+            }
+        }
+
+        String fileName = directoryPath + "/" + user.getId() + ".txt"; // Полный путь к файлу
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write(user.getId() + ":" + user.getPassword()); // Сохранение логина и пароля
             writer.newLine();
@@ -132,8 +146,9 @@ public class UsersList {
             writer.newLine();
             writer.write("Email: " + user.getEmail());
             // Можно добавить дополнительные данные пользователя
+            System.out.println("Данные пользователя сохранены в файл: " + fileName);
         } catch (IOException e) {
-            System.out.println("Ошибка записи" + e.getMessage());
+            System.out.println("Ошибка записи: " + e.getMessage());
         }
     }
 }
