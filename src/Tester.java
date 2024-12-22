@@ -8,7 +8,6 @@ public class Tester {
     private static final String FILE_NAME = "user_data.txt";
     private static HashMap<String, String> userDatabase = new HashMap<>(); // Логины и пароли в памяти
     private static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) {
         loadUserData();
         while (true) {
@@ -164,16 +163,11 @@ public class Tester {
     }
 
     private static void studentCourses() {
-        // Пример реализации курсов студента
         System.out.println("Вы выбрали курсы студента.");
-        // Здесь можно добавить логику для отображения курсов
-        System.out.println("Курсы: \n1. Введение в программирование\n2. Алгоритмы и структуры данных\n3. Базы данных");
     }
 
     private static void technicalSupport() {
-        // Пример реализации технической поддержки
         System.out.println("Вы выбрали техническую поддержку.");
-        // Здесь можно добавить логику для обращения в техподдержку
         System.out.println("Для получения помощи, пожалуйста, свяжитесь с нашей службой поддержки по телефону: 123-456-7890.");
     }
 }
