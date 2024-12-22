@@ -36,6 +36,9 @@ public abstract class Student extends User {
         super(id, fullname, email, password);
     }
 
+    public Student(String id, String fullname, String email, String password, List<Course> enrolledCourses) {
+    }
+
 
     public List<Course> getEnrolledCourses() {
         return enrolledCourses;
