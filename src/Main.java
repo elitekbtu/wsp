@@ -1,182 +1,169 @@
-import users.User;
-import users.employees.Admin;
-import users.employees.Manager;
-import users.employees.Teacher;
-import users.students.MasterStudent;
-import users.students.PhDStudent;
-import users.students.UndergraduateStudent;
-
+import java.io.*;
+import java.util.HashMap;
 import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
-
-    private static final ConcurrentHashMap<String, User> users = new ConcurrentHashMap<>();
+    private static final String FILE_NAME = "user_data.txt";
+    private static HashMap<String, String> userDatabase = new HashMap<>(); // Логины и пароли в памяти
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        initializeUsers();
-
-        Scanner scanner = new Scanner(System.in);
+        loadUserData();
 
         while (true) {
-            System.out.println("------------------");
-            System.out.println("Welcome to WSP application!");
-            System.out.println("------------------");
-            System.out.println("1. Login");
-            System.out.println("2. Register");
-            System.out.println("3. Exit");
-            System.out.print("Enter the number of the action: ");
-
+            System.out.println("\nВыберите действие: 1 - Регистрация, 2 - Вход, 0 - Выход");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline character
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
-                    login(scanner);
+                    registerUser ();
                     break;
                 case 2:
-                    register(scanner);
+                    if (loginUser ()) {
+                        mainMenu();
+                    }
                     break;
-                case 3:
-                    System.out.println("Goodbye!");
+                case 0:
+                    System.out.println("Программа завершена.");
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Invalid input. Please try again.");
+                    System.out.println("Неверный выбор. Попробуйте снова.");
             }
         }
     }
 
-    private static void initializeUsers() {
-        // Initialize some users for testing purposes
-        users.put("admin", new Admin("admin", "Administrator", "admin@example.com", "admin", "Administration"));
-        users.put("manager", new Manager("manager", "Manager", "manager@example.com", "manager", "Management"));
-        users.put("teacher", new Teacher("teacher", "Teacher", "teacher@example.com", "teacher", "Faculty"));
-        users.put("undergraduate", new UndergraduateStudent("undergraduate", "Undergraduate Student", "undergraduate@example.com", "undergraduate"));
-        users.put("master", new MasterStudent("master", "Master's Student", "master@example.com", "master"));
-        users.put("phd", new PhDStudent("phd", "PhD Student", "phd@example.com", "phd"));
+    private static void loadUserData() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":", 2); // Формат логин:пароль
+                if (parts.length == 2) {
+                    userDatabase.put(parts[0], parts[1]);
+                }
+            }
+            System.out.println("Данные пользователей загружены.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл данных не найден. Будет создан новый.");
+        } catch (IOException e) {
+            System.out.println("Ошибка чтения файла: " + e.getMessage());
+        }
     }
 
-    private static void login(Scanner scanner) {
-        System.out.print("Enter your login: ");
-        String login = scanner.nextLine();
+    private static void saveUserData() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (String login : userDatabase.keySet()) {
+                String password = userDatabase.get(login);
+                writer.write(login + ":" + password);
+                writer.newLine();
+            }
+            System.out.println("Данные пользователей сохранены.");
+        } catch (IOException e) {
+            System.out.println("Ошибка записи файла: " + e.getMessage());
+        }
+    }
 
-        System.out.print("Enter your password: ");
-        String password = scanner.nextLine();
+    private static void registerUser () {
+        System.out.println("Введите логин:");
+        String registerLogin = scanner.nextLine();
 
-        User user = users.get(login);
-
-        if (user != null && user.authenticate(login, password)) {
-            System.out.println("Login successful!");
-            handleLoggedInUser(user, scanner);
+        if (userDatabase.containsKey(registerLogin)) {
+            System.out.println("Логин уже существует. Попробуйте другой.");
         } else {
-            System.out.println("Invalid login or password.");
+            System.out.println("Введите пароль:");
+            String registerPassword = scanner.nextLine();
+            userDatabase.put(registerLogin, registerPassword); // Сохранение логина и пароля
+            saveUserData(); // Сохраняем данные в файл
+            System.out.println("Регистрация успешна!");
         }
     }
 
-    private static void register(Scanner scanner) {
-        System.out.println("------------------");
-        System.out.println("Register new user");
-        System.out.println("------------------");
-        System.out.print("Enter your login: ");
+    private static boolean loginUser () {
+        System.out.println("Введите логин:");
         String login = scanner.nextLine();
-
-        if (users.containsKey(login)) {
-            System.out.println("This login is already taken.");
-            return;
-        }
-
-        System.out.print("Enter your name: ");
-        String name = scanner.nextLine();
-
-        System.out.print("Enter your email: ");
-        String email = scanner.nextLine();
-
-        if (!isValidEmail(email)) {
-            System.out.println("Invalid email.");
-            return;
-        }
-
-        System.out.print("Enter your password: ");
+        System.out.println("Введите пароль:");
         String password = scanner.nextLine();
 
-        if (!isValidPassword(password)) {
-            System.out.println("Password must be at least 6 characters long.");
-            return;
+        if (userDatabase.containsKey(login) && userDatabase.get(login).equals(password)) {
+            System.out.println("Вход выполнен успешно! Добро пожаловать, " + login + "!");
+            return true;
+        } else {
+            System.out.println("Ошибка входа. Проверьте логин и пароль.");
+            return false;
         }
-
-        System.out.println("Choose user type:");
-        System.out.println("1. Administrator");
-        System.out.println("2. Manager");
-        System.out.println("3. Teacher");
-        System.out.println("4. Undergraduate Student");
-        System.out.println("5. Master's Student");
-        System.out.println("6. PhD Student");
-        System.out.print(" Enter the number of user type: ");
-        int userType = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
-
-        User newUser  = null;
-        switch (userType) {
-            case 1:
-                newUser  = new Admin(login, name, email, password, "Administration");
-                break;
-            case 2:
-                newUser  = new Manager(login, name, email, password, "Management");
-                break;
-            case 3:
-                newUser  = new Teacher(login, name, email, password, "Faculty");
-                break;
-            case 4:
-                newUser  = new UndergraduateStudent(login, name, email, password);
-                break;
-            case 5:
-                newUser  = new MasterStudent(login, name, email, password);
-                break;
-            case 6:
-                newUser  = new PhDStudent(login, name, email, password);
-                break;
-            default:
-                System.out.println("Invalid user type.");
-                return;
-        }
-
-        users.put(login, newUser );
-        System.out.println("Registration successful!");
     }
 
-    private static void handleLoggedInUser (User user, Scanner scanner) {
-        System.out.println("Welcome, " + user.getFullname() + "!");
+    private static void mainMenu() {
         while (true) {
-            System.out.println("Choose an action:");
-            System.out.println("1. View Profile");
-            System.out.println("2. Edit Profile");
-            System.out.println("3. Logout");
-            System.out.print("Enter the number of action: ");
+            System.out.println("\nГлавное меню:");
+            System.out.println("1 - Новостная лента");
+            System.out.println("2 - Данные студента");
+            System.out.println("3 - Транскрипт");
+            System.out.println("4 - Курсы студента");
+            System.out.println("5 - Техническая поддержка");
+            System.out.println("6 - Выйти");
+
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline character
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
-                    System.out.println(user);
+                    newsFeed();
                     break;
                 case 2:
-                    System.out.println("Edit function is not yet implemented.");
+                    studentData();
                     break;
                 case 3:
-                    System.out.println("You have logged out.");
+                    transcript();
+                    break;
+                case 4:
+                    studentCourses();
+                    break;
+                case 5:
+                    technicalSupport();
+                    break;
+                case 6:
+                    System.out.println("Выход из меню.");
                     return;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Неверный выбор. Попробуйте снова.");
             }
         }
     }
 
-    private static boolean isValidEmail(String email) {
-        return email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
+    private static void newsFeed() {
+        // Пример реализации новостной л енты
+        System.out.println("Вы выбрали новостную ленту.");
+        // Здесь можно добавить логику для отображения новостей
+        System.out.println("Здесь будут отображаться последние новости.");
     }
 
-    private static boolean isValidPassword(String password) {
-        return password.length() >= 6;
+    private static void studentData() {
+        // Пример реализации данных студента
+        System.out.println("Вы выбрали данные студента.");
+        // Здесь можно добавить логику для отображения данных студента
+        System.out.println("Имя студента: Иван Иванов\nВозраст: 20 лет\nГруппа: ИТ-21");
+    }
+
+    private static void transcript() {
+        // Пример реализации транскрипта
+        System.out.println("Вы выбрали транскрипт.");
+        // Здесь можно добавить логику для отображения транскрипта
+        System.out.println("Транскрипт: \n1. Математика - 5\n2. Программирование - 4\n3. Физика - 3");
+    }
+
+    private static void studentCourses() {
+        // Пример реализации курсов студента
+        System.out.println("Вы выбрали курсы студента.");
+        // Здесь можно добавить логику для отображения курсов
+        System.out.println("Курсы: \n1. Введение в программирование\n2. Алгоритмы и структуры данных\n3. Базы данных");
+    }
+
+    private static void technicalSupport() {
+        // Пример реализации технической поддержки
+        System.out.println("Вы выбрали техническую поддержку.");
+        // Здесь можно добавить логику для обращения в техподдержку
+        System.out.println("Для получения помощи, пожалуйста, свяжитесь с нашей службой поддержки по телефону: 123-456-7890.");
     }
 }
