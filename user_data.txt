@@ -1,4 +1,6 @@
 tuka:tuka1234
 b:bek
 ermek:ermek
+qwerty:ermek
+ermekasaubay:parol
 beknur:sdfghj

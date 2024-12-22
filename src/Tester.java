@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Random;
 import news.NewsList;
+import users.UsersList;
 import users.employees.TechSupportOrder;
 
 public class Tester {
@@ -76,6 +77,8 @@ public class Tester {
             String registerPassword = scanner.nextLine();
             userDatabase.put(registerLogin, registerPassword); // Сохранение логина и пароля
             saveUserData(); // Сохраняем данные в файл
+            UsersList usersList = new UsersList();
+            usersList.register();
             System.out.println("Регистрация успешна!");
         }
     }
