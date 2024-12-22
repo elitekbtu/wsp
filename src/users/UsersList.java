@@ -125,30 +125,30 @@ public class UsersList {
     }
 
     private void saveUserData(User user) {
-        String directoryPath = "users/UsersData"; // Имя папки
+        String userType = user.getClass().getSimpleName(); // Get the user type (e.g., "Student", "Teacher")
+        String directoryPath = "users/UsersData/" + userType; // Create path based on user type
         File directory = new File(directoryPath);
 
-        // Проверка и создание папки, если ее нет
+        // Check and create the directory if it doesn't exist
         if (!directory.exists()) {
             if (directory.mkdirs()) {
-                System.out.println("Папка " + directoryPath + " успешно создана.");
+                System.out.println("Directory " + directoryPath + " created successfully.");
             } else {
-                System.out.println("Не удалось создать папку " + directoryPath);
-                return; // Если папку нельзя создать, прерываем метод
+                System.out.println("Failed to create directory " + directoryPath);
+                return; // If the directory cannot be created, exit the method
             }
         }
 
-        String fileName = directoryPath + "/" + user.getId() + ".txt"; // Полный путь к файлу
+        String fileName = directoryPath + "/" + user.getId() + ".txt"; // Full path to the file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            writer.write(user.getId() + ":" + user.getPassword()); // Сохранение логина и пароля
+            writer.write(user.getId() + ":" + user.getPassword()); // Save login and password
             writer.newLine();
             writer.write("Fullname: " + user.getFullname());
             writer.newLine();
             writer.write("Email: " + user.getEmail());
-            // Можно добавить дополнительные данные пользователя
-            System.out.println("Данные пользователя сохранены в файл: " + fileName);
+            System.out.println("User  data saved in file: " + fileName);
         } catch (IOException e) {
-            System.out.println("Ошибка записи: " + e.getMessage());
+            System.out.println("Error writing file: " + e.getMessage());
         }
     }
 }

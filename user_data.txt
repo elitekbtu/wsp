@@ -1,8 +1,5 @@
-tuka:tuka1234
-a:b
-b:bek
-ermek:ermek
-b_ualikhanuly:beka1234
-qwerty:ermek
-ermekasaubay:parol
-beknur:sdfghj
+techsupport:techsupport
+student1:student1
+Teacher:teacher
+Admin:admin
+Manager:manager
