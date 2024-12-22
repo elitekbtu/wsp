@@ -5,6 +5,7 @@ import java.util.Random;
 import news.NewsList;
 import users.UsersList;
 import users.employees.TechSupportOrder;
+import courses.CourseData.Data;
 
 public class Tester {
     private static final String FILE_NAME = "user_data.txt";
@@ -122,7 +123,7 @@ public class Tester {
                     transcript();
                     break;
                 case 4:
-                    studentCourses();
+                   registerForCourses();
                     break;
                 case 5:
                     technicalSupport();
@@ -163,9 +164,41 @@ public class Tester {
 
     }
 
-    private static void studentCourses() {
-        System.out.println("Вы выбрали курсы студента.");
+
+    private static void showAvailableCourses() {
+        System.out.println("Доступные курсы:");
+        Data[] courses = Data.getAvailableCourses(); // Получаем курсы через метод
+        for (int i = 0; i < courses.length; i++) {
+            Data course = courses[i];
+            System.out.printf("%d. [%s] %s (%d ECTS)%n", i + 1, course.getCode(), course.getDiscipline(), course.getEcts());
+        }
     }
+
+    private static void registerForCourses() {
+        showAvailableCourses();
+
+        System.out.println("\nВведите номера курсов через запятую (например: 1,3,4):");
+        String input = scanner.nextLine();
+        String[] selectedIndexes = input.split(",");
+
+        System.out.println("Вы выбрали следующие курсы:");
+        Data[] courses = Data.getAvailableCourses(); // Получаем курсы через метод
+        for (String indexStr : selectedIndexes) {
+            try {
+                int index = Integer.parseInt(indexStr.trim()) - 1; // Преобразуем в индекс
+                if (index >= 0 && index < courses.length) {
+                    Data selectedCourse = courses[index];
+                    System.out.printf("[%s] %s (%d ECTS)%n", selectedCourse.getCode(), selectedCourse.getDiscipline(), selectedCourse.getEcts());
+                    // Логика сохранения курса для пользователя
+                } else {
+                    System.out.println("Неверный номер курса: " + (index + 1));
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Некорректный ввод: " + indexStr);
+            }
+        }
+    }
+
 
 
 
