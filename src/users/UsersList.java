@@ -7,10 +7,7 @@ import users.employees.TechSupportSpecialist;
 import users.students.Student;
 import users.students.UndergraduateStudent;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class UsersList {
@@ -151,4 +148,57 @@ public class UsersList {
             System.out.println("Error writing file: " + e.getMessage());
         }
     }
+    public void loadUserData() {
+        System.out.println("Введите ID: ");
+        String id = scanner.nextLine();
+
+        System.out.println("Выбери свой тип: ");
+        System.out.println("1. Student         2. Teacher        3. Admin\n4. TechSupport         5. Manager");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        File file = null;
+
+        switch (choice) {
+            case 1:
+                file = new File("users/UsersData/UndergraduateStudent/" + id + ".txt");
+                break;
+            case 2:
+                file = new File("users/UsersData/Teacher/" + id + ".txt");
+                break;
+            case 3:
+                file = new File("users/UsersData/Admin/" + id + ".txt");
+                break;
+            case 4:
+                file = new File("users/UsersData/TechSupportSpecialist/" + id + ".txt");
+                break;
+            case 5:
+                file = new File("users/UsersData/Manager/" + id + ".txt");
+                break;
+            default:
+                System.out.println("Неверный выбор типа пользователя.");
+                return;
+        }
+
+        if (file != null) {
+            if (file.exists()) {
+                readFile(file);
+            } else {
+                System.out.println("Файл пользователя не найден: " + file.getPath());
+            }
+        }
+    }
+
+    private void readFile(File file) {
+        try (Scanner fileScanner = new Scanner(file)) {
+            System.out.println("Данные пользователя:");
+            while (fileScanner.hasNextLine()) {
+                System.out.println(fileScanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Ошибка при чтении файла: " + e.getMessage());
+        }
+    }
+
 }

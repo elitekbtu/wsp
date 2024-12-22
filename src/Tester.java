@@ -154,10 +154,9 @@ public class Tester {
 
 
     private static void studentData() {
-        // Пример реализации данных студента
         System.out.println("Вы выбрали данные студента.");
-        // Здесь можно добавить логику для отображения данных студента
-        System.out.println("Имя студента: Иван Иванов\nВозраст: 20 лет\nГруппа: ИТ-21");
+        UsersList usersList = new UsersList();
+        usersList.loadUserData();
     }
 
     private static void transcript() {
