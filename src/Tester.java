@@ -2,14 +2,13 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class Main {
+public class Tester {
     private static final String FILE_NAME = "user_data.txt";
     private static HashMap<String, String> userDatabase = new HashMap<>(); // Логины и пароли в памяти
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         loadUserData();
-
         while (true) {
             System.out.println("\nВыберите действие: 1 - Регистрация, 2 - Вход, 0 - Выход");
             int choice = scanner.nextInt();
