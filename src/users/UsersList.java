@@ -1,23 +1,139 @@
 package users;
 
+import users.employees.Admin;
+import users.employees.Manager;
+import users.employees.Teacher;
+import users.employees.TechSupportSpecialist;
+import users.students.Student;
+import users.students.UndergraduateStudent;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class UsersList {
+    private Scanner scanner;
+
+    public UsersList() {
+        this.scanner = new Scanner(System.in);
+    }
+
     public void register() {
         System.out.println("Добро пожаловать в регистрацию");
         System.out.println("Выберите опцию: ");
         System.out.println("1. Student         2. Teacher        3. Admin\n4. TechSupport         5. Manager");
-        Scanner scanner = new Scanner(System.in);
+
         int choice = scanner.nextInt();
+        scanner.nextLine(); // Очистка буфера
+
         switch (choice) {
             case 1:
-                System.out.println("Добро пожаловать студент:\nВыбери опцию: ");
-                System.out.println("1.Бакалавр         2.Магистрант        3. PhD \n4. Обучающийся");
-                int choice2 = scanner.nextInt();
-                switch (choice2){
-
-                }
+                registerStudent();
+                break;
+            case 2:
+                registerTeacher();
+                break;
+            case 3:
+                registerAdmin();
+                break;
+            case 4:
+                registerTechSupport();
+                break;
+            case 5:
+                registerManager();
+                break;
+            default:
+                System.out.println("Неверный выбор. Попробуйте снова.");
         }
+    }
 
+    private void registerStudent() {
+        System.out.println("Введите ID студента:");
+        String id = scanner.nextLine();
+        System.out.println("Введите полное имя студента:");
+        String fullname = scanner.nextLine();
+        System.out.println("Введите email студента:");
+        String email = scanner.nextLine();
+        System.out.println("Введите пароль студента:");
+        String password = scanner.nextLine();
+
+        Student student = new UndergraduateStudent(id, fullname, email, password);
+        saveUserData(student);
+        System.out.println("Студент зарегистрирован успешно!");
+    }
+
+    private void registerTeacher() {
+        System.out.println("Введите ID учителя:");
+        String id = scanner.nextLine();
+        System.out.println("Введите полное имя учителя:");
+        String fullname = scanner.nextLine();
+        System.out.println("Введите email учителя:");
+        String email = scanner.nextLine();
+        System.out.println("Введите пароль учителя:");
+        String password = scanner.nextLine();
+
+        Teacher teacher = new Teacher(id, fullname, email, password, "Department");
+        saveUserData(teacher);
+        System.out.println("Учитель зарегистрирован успешно!");
+    }
+
+    private void registerAdmin() {
+        System.out.println("Введите ID администратора:");
+        String id = scanner.nextLine();
+        System.out.println("Введите полное имя администратора:");
+        String fullname = scanner.nextLine();
+        System.out.println("Введите email администратора:");
+        String email = scanner.nextLine();
+        System.out.println("Введите пароль администратора:");
+        String password = scanner.nextLine();
+
+        Admin admin = new Admin(id, fullname, email, password, "Administration");
+        saveUserData(admin);
+        System.out.println("Администратор зарегистрирован успешно!");
+    }
+
+    private void registerTechSupport() {
+        System.out.println("Введите ID сотрудника технической поддержки:");
+        String id = scanner.nextLine();
+        System.out.println("Введите полное имя сотрудника:");
+        String fullname = scanner.nextLine();
+        System.out.println("Введите email сотрудника:");
+        String email = scanner.nextLine();
+        System.out.println("Введите пароль сотрудника:");
+        String password = scanner.nextLine();
+
+        TechSupportSpecialist techSupport = new TechSupportSpecialist(id, fullname, email, password, "TechSupport");
+        saveUserData(techSupport);
+        System.out.println("Сотрудник технической поддержки зарегистрирован успешно!");
+    }
+
+    private void registerManager() {
+        System.out.println("Введите ID менеджера:");
+        String id = scanner.nextLine();
+        System.out.println("Введите полное имя менеджера:");
+        String fullname = scanner.nextLine();
+        System.out.println("Введите email менеджера:");
+        String email = scanner.nextLine();
+        System.out.println("Введите пароль менеджера:");
+        String password = scanner.nextLine();
+
+        Manager manager = new Manager(id, fullname, email, password, "Management");
+        saveUserData(manager);
+        System.out.println("Менеджер зарегистрирован успешно!");
+    }
+
+    private void saveUserData(User user) {
+        String fileName = "Пользователи/" + user.getId() + ".txt"; // Создание имени файла на основе ID пользователя
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write(user.getId() + ":" + user.getPassword()); // Сохранение логина и пароля
+            writer.newLine();
+            writer.write("Fullname: " + user.getFullname());
+            writer.newLine();
+            writer.write("Email: " + user.getEmail());
+            // Можно добавить дополнительные данные пользователя
+        } catch (IOException e) {
+            System.out.println("Ошибка записи" + e.getMessage());
+        }
     }
 }
