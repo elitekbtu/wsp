@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TechSupportOrder {
-    private static final Set<TechSupportOrder> techSupportOrderRegistry = new HashSet<>();
+    public static final Set<TechSupportOrder> techSupportOrderRegistry = new HashSet<>();
 
     private String orderId;
     private String description;

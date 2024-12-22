@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Random;
 import news.NewsList;
+import users.employees.TechSupportOrder;
 
 public class Tester {
     private static final String FILE_NAME = "user_data.txt";
@@ -142,8 +143,8 @@ public class Tester {
         System.out.println("Последние новости:");
 
         for (int i = 0; i < count; i++) {
-            int index = random.nextInt(newsList.news.length); // Генерация случайного индекса
-            System.out.println((i + 1) + ". " + newsList.news[index]); // Вывод случайной новости
+            int index = random.nextInt(newsList.news.length);
+            System.out.println((i + 1) + ". " + newsList.news[index]);
         }
     }
 
@@ -166,8 +167,96 @@ public class Tester {
         System.out.println("Вы выбрали курсы студента.");
     }
 
+
+
+
+
     private static void technicalSupport() {
         System.out.println("Вы выбрали техническую поддержку.");
-        System.out.println("Для получения помощи, пожалуйста, свяжитесь с нашей службой поддержки по телефону: 123-456-7890.");
+        while (true) {
+            System.out.println("\n1 - Создать запрос\n2 - Просмотреть запросы\n3 - Закрыть запрос\n4 - Вернуться в главное меню");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    createSupportRequest();
+                    break;
+                case 2:
+                    viewSupportRequests();
+                    break;
+                case 3:
+                    closeSupportRequest();
+                    break;
+                case 4:
+                    System.out.println("Возвращаемся в главное меню.");
+                    return;
+                default:
+                    System.out.println("Неверный выбор. Попробуйте снова.");
+            }
+        }
     }
+    private static void createSupportRequest() {
+        System.out.println("Введите описание вашего запроса:");
+        String description = scanner.nextLine();
+        String orderId = "REQ-" + System.currentTimeMillis();
+
+
+        TechSupportOrder newOrder = new TechSupportOrder(orderId, description, true, false, false);
+        TechSupportOrder.addRegistry(newOrder);
+
+        System.out.println("Ваш запрос создан с ID: " + orderId);
+    }
+
+    private static void viewSupportRequests() {
+        System.out.println("Ваши запросы:");
+        boolean hasRequests = false;
+
+        for (TechSupportOrder order : TechSupportOrder.techSupportOrderRegistry) {
+            System.out.println("ID: " + order.getOrderId());
+            System.out.println("Описание: " + order.getDescription());
+            System.out.println("Статус: " + getOrderStatus(order));
+            System.out.println();
+            hasRequests = true;
+        }
+
+        if (!hasRequests) {
+            System.out.println("У вас нет активных запросов.");
+        }
+    }
+
+    private static String getOrderStatus(TechSupportOrder order) {
+        if (order.isDone()) return "Завершён";
+        if (order.isAccepted()) return "Принят";
+        if (order.isNew()) return "Новый";
+        return "Неизвестный статус";
+    }
+
+
+
+
+
+
+    private static void closeSupportRequest() {
+        System.out.println("Введите ID запроса, который хотите закрыть:");
+        String orderId = scanner.nextLine();
+
+        TechSupportOrder order = TechSupportOrder.findRegistry(orderId);
+
+        if (order != null) {
+            if (!order.isDone()) {
+                order.setDone(true);
+                order.setAccepted(false);
+                order.setNew(false);
+                System.out.println("Запрос с ID " + orderId + " закрыт.");
+            } else {
+                System.out.println("Этот запрос уже завершён.");
+            }
+        } else {
+            System.out.println("Запрос с таким ID не найден.");
+        }
+    }
+
+
+
 }
