@@ -160,14 +160,15 @@ public class Tester {
     }
 
     private static void transcript() {
-        // Пример реализации транскрипта
+
         System.out.println("Вы выбрали транскрипт.");
-        // Здесь можно добавить логику для отображения транскрипта
-        System.out.println("Транскрипт: \n1. Математика - 5\n2. Программирование - 4\n3. Физика - 3");
+
+
     }
 
     private static void studentCourses() {
         System.out.println("Вы выбрали курсы студента.");
+        System.out.println("1. Регистрация на курсы                    2. Просмотр курсов");
     }
 
 
