@@ -97,6 +97,7 @@ public class Course {
      * @param teacher Преподаватель для добавления.
      */
     public void addInstructor(Teacher teacher) {
+
         instructors.add(teacher);
     }
 
