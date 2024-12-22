@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Random;
+import news.NewsList;
 
 public class Tester {
     private static final String FILE_NAME = "user_data.txt";
@@ -132,11 +134,20 @@ public class Tester {
     }
 
     private static void newsFeed() {
-        // Пример реализации новостной л енты
         System.out.println("Вы выбрали новостную ленту.");
-        // Здесь можно добавить логику для отображения новостей
-        System.out.println("Здесь будут отображаться последние новости.");
+
+        NewsList newsList = new NewsList();
+
+        Random random = new Random();
+        int count = 5;
+        System.out.println("Последние новости:");
+
+        for (int i = 0; i < count; i++) {
+            int index = random.nextInt(newsList.news.length); // Генерация случайного индекса
+            System.out.println((i + 1) + ". " + newsList.news[index]); // Вывод случайной новости
+        }
     }
+
 
     private static void studentData() {
         // Пример реализации данных студента
